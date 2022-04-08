@@ -1,0 +1,21 @@
+body {
+  @apply text-sm sm:tracking-wide;
+}
+
+.msg_srv {
+  @apply text-gray-400;
+}
+.msg_srv:before {
+  content: "> ";
+}
+
+a {
+  @apply underline underline-offset-2;
+}
+a:before {
+  content: '🔗'
+}
+cmd {
+    @apply text-gray-900;
+    @apply cursor-pointer;
+}

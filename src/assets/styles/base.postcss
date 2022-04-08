@@ -1,25 +1,35 @@
-@import "@/assets/styles/card.postcss";
+@import "./typography.postcss";
+@import "./animations.postcss";
 
-.highlight {
-  @apply text-transparent;
-  @apply bg-clip-text;
-  background-image: linear-gradient(45deg, #aa85ff, #ffc39b);
-  animation: hue-rotation 1.2s linear infinite;
+:focus-visible {
+  outline: transparent !important;
 }
-@keyframes hue-rotation {
-  from {
-    filter: hue-rotate(0deg);
-  }
-  to {
-    filter: hue-rotate(1turn);
-  }
+:focus {
+  outline: transparent !important;
+}
+
+::-webkit-scrollbar {
+  @apply w-0;
 }
 
 @font-face {
-  font-family: 'Inter var';
-  font-weight: 100 900;
-  font-display: swap;
+  font-family: 'Fira Mono';
   font-style: normal;
-  font-named-instance: 'Regular';
-  src: url('@/assets/fonts/Inter-roman.var.woff2') format('woff2');
+  font-weight: 400;
+  src: local(''),
+       url('@/assets/fonts/fira-mono-v12-latin-regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fira Mono';
+  font-style: normal;
+  font-weight: 500;
+  src: local(''),
+       url('@/assets/fonts/fira-mono-v12-latin-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fira Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: local(''),
+       url('@/assets/fonts/fira-mono-v12-latin-700.woff2') format('woff2');
 }
