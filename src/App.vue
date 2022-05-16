@@ -8,6 +8,8 @@
         <span class="break-words" v-html="msg.value"></span>
       </div>
     </section>
+
+    <!-- Default text -->
     <div class="my-1.5 msg_srv">
       alternatively, you may learn what this is all <cmd>/about</cmd>, get <cmd>/help</cmd>, or
       <cmd>/visit [channel-name]</cmd>
@@ -83,7 +85,17 @@ function sendMessage() {
   if (message.value.startsWith("/")) {
     let [key, ...value] = message.value.replace("/", "").split(" ")
     ws.send(JSON.stringify({ type: "command", key, value }))
-  } else ws.send(JSON.stringify({ type: "message", key: client_id.value, value: message.value.trim() }))
+  } else {
+    const url_match = new RegExp(
+      /^(https?:\/\/)?(?:www\.|(?!www\.))(([a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]|[a-zA-Z0-9]+)\.)+(([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9]){2,})\/?/i
+    )
+    message.value = message.value
+      .split(" ")
+      .map((word) => (url_match.test(word) ? `${word.endsWith(".gif") ? "!" : ""}[${word}](${word})` : word))
+      .join(" ")
+
+    ws.send(JSON.stringify({ type: "message", key: client_id.value, value: message.value.trim() }))
+  }
 
   message_history.value.unshift(message.value)
   message_history_index.value = -1
