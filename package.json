@@ -8,16 +8,14 @@
     "deploy": "ssh siyu \"(cd /home/pi/work/static-servers/portal && rm -rf dist/)\" && scp -r ./dist siyu:/home/pi/work/static-servers/portal && ssh siyu \"(cd /home/pi/work/static-servers/portal && yarn compress && pm2 restart 'portal')\""
   },
   "dependencies": {
-    "showdown": "^2.0.3",
-    "unplugin-vue-components": "^0.17.18",
-    "vue": "^3.2.31"
-  },
-  "devDependencies": {
-    "@types/tailwindcss": "^3.0.7",
-    "@vitejs/plugin-vue": "^2.2.0",
-    "autoprefixer": "^10.4.2",
-    "prettier-plugin-tailwindcss": "^0.1.7",
-    "tailwindcss": "^3.0.22",
-    "vite": "^2.9.1"
+    "showdown": "^2.1.0",
+    "unplugin-vue-components": "^0.19.5",
+    "vue": "^3.2.33",
+    "@types/tailwindcss": "^3.0.10",
+    "@vitejs/plugin-vue": "^2.3.3",
+    "autoprefixer": "^10.4.7",
+    "prettier-plugin-tailwindcss": "^0.1.11",
+    "tailwindcss": "^3.0.24",
+    "vite": "^2.9.9"
   }
 }
