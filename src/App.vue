@@ -1,10 +1,10 @@
 <template>
   <portal-eye class="absolute z-50 w-8 top-6 right-6 sm:top-8 sm:right-20 " :open="!!client_id" />
-  <div class="page__container" @click="cmdAutoPrompt">
+  <div class="page__container" @click="autoPrompt">
     <input v-model="message" @keydown.enter="sendMessage" ref="cli_input" class="cli_input" type="text" />
     <section class="chat">
       <div v-for="(msg, i) in chat" :key="i" class="my-1.5" :class="msg.key ? 'msg' : 'msg_srv'">
-        <span v-if="msg.key" class="mr-2 break-all">&lt;{{nameFormater(msg.key)}}&gt;</span>
+        <span v-if="msg.key" id="name" class="msg_sender">{{msg.key}}</span>
         <span class="break-words" v-html="msg.value"></span>
       </div>
     </section>
@@ -15,6 +15,7 @@
       <cmd>/visit [channel-name]</cmd>
     </div>
     <p class="my-1.5 msg_srv">type the channel you want to <cmd>/visit</cmd></p>
+    <p class="my-1.5 msg_srv">You can click on any <b>name</b> or <b>command</b> in the chat to auto fill the prompt field</p>
     <p class="my-1.5 msg_srv">anonymous, no history, instant chat</p>
     <p class="mb-6 sm:mb-12 text-3xl sm:text-7xl">Hello Pilgrim<span class="text-gray-500">*</span></p>
   </div>
@@ -60,7 +61,7 @@ ws.onmessage = function (event) {
 }
 ws.onclose = function (e) {
   client_id.value = ""
-  chat.value.push({ type: "message", key: undefined, value: "disconnected" })
+  chat.value.push({ type: "message", key: undefined, value: "disconnected (reload the page to reconnect)" })
 }
 ws.onerror = console.error
 
@@ -86,6 +87,7 @@ function sendMessage() {
     let [key, ...value] = message.value.replace("/", "").split(" ")
     ws.send(JSON.stringify({ type: "command", key, value }))
   } else {
+    // 🔍 Url parsing
     const url_match = new RegExp(
       /^(https?:\/\/)?(?:www\.|(?!www\.))(([a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]|[a-zA-Z0-9]+)\.)+(([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9]){2,})\/?/i
     )
@@ -102,14 +104,10 @@ function sendMessage() {
   message.value = ""
 }
 
-function nameFormater(id) {
-  if (/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/.test(id)) return `Pilgrim-${id.split("-")[0]}`
-  else return id
-}
-
-function cmdAutoPrompt(event) {
+function autoPrompt(event) {
+  if (event.target.id === "name") return (message.value += event.target.innerText)
   const el = event.target.closest("cmd")
-  if (el) message.value = el.innerText
+  if (el) return (message.value = el.innerText)
 }
 </script>
 
@@ -128,6 +126,15 @@ function cmdAutoPrompt(event) {
 
 .chat {
   @apply mb-4 sm:mb-8;
+}
+.msg_sender {
+  @apply mr-2 break-all cursor-pointer;
+}
+.msg_sender:before {
+  content: "<";
+}
+.msg_sender:after {
+  content: ">";
 }
 
 .cli_input {
