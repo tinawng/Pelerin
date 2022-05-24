@@ -10,7 +10,7 @@
   "dependencies": {
     "showdown": "^2.1.0",
     "unplugin-vue-components": "^0.19.5",
-    "vue": "^3.2.33",
+    "vue": "^3.2.36",
     "@types/tailwindcss": "^3.0.10",
     "@vitejs/plugin-vue": "^2.3.3",
     "autoprefixer": "^10.4.7",
